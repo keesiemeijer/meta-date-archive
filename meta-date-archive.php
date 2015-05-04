@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Meta Date Archive
-Version: 1.0
+Version: 1.1
 Plugin URI:
 Description: Date archives from custom field ranges
 Author: keesiemijer
@@ -25,20 +25,29 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /* loads plugin files, adds the shortcode and sets the text domain */
 if ( !function_exists( 'meta_date_archive_init' ) ) {
 
 	function meta_date_archive_init() {
 
-		// include files only needed on the front end
 		if ( !is_admin() ) {
+			// include files only needed on the front end
 
-			// functions to retrieve related posts from the database
-			require_once plugin_dir_path( __FILE__ ) . 'functions.php';
 
 			// functions for display of the related post thumbnail gallery
 			require_once plugin_dir_path( __FILE__ ) . 'query.php';
 
+			// functions to retrieve related posts from the database
+			require_once plugin_dir_path( __FILE__ ) . 'functions.php';
+		} else {
+
+			// updates the start key if only end key is submitted when saving a post
+			require_once plugin_dir_path( __FILE__ ) . 'admin.php';
 		}
 	}
 

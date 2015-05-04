@@ -1,10 +1,15 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class Meta_Date_Archive_Query {
 
 	public $start;
 	public $end;
 	public $dates;
-	public $post_type;
 	public $filters;
 	public $orderby_key;
 
@@ -26,13 +31,11 @@ class Meta_Date_Archive_Query {
 			return;
 		}
 
-		$this->start     = apply_filters( 'meta_date_archive_start',     'event_start_date' );
-		$this->end       = apply_filters( 'meta_date_archive_end',       'event_end_date' );
-		$this->post_type = apply_filters( 'meta_date_archive_post_type', 'post' );
+		$this->start = apply_filters( 'meta_date_archive_start', 'meta_start_date' );
+		$this->end   = apply_filters( 'meta_date_archive_end',   'meta_end_date' );
 
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ), 70 );
 		add_filter( 'query_vars',    array( $this, 'query_vars' ) );
-		add_action( 'save_post',     array( $this, 'save_post' ) );
 	}
 
 
@@ -57,7 +60,10 @@ class Meta_Date_Archive_Query {
 		if ( $query->is_main_query() ) {
 			// main queries
 
-			if ( is_date() ) {
+			$date_archives = $query->get( 'meta_date_archives' );
+			$date_archives = apply_filters( 'meta_date_archives', $date_archives );
+
+			if ( is_date() && $date_archives ) {
 				// main query for date archive
 				$dates           = meta_date_archive_dates();
 				$meta_date_query = true;
@@ -89,7 +95,7 @@ class Meta_Date_Archive_Query {
 
 		if ( empty( $dates ) ) {
 
-			// return no posts found
+			// fake no posts found
 			//
 			// not a date archives main query
 			// or an external query with dates where the dates didn't validate
@@ -101,7 +107,6 @@ class Meta_Date_Archive_Query {
 		}
 
 		$this->dates = $dates;
-		$query->set( 'meta_date_archive_query', 1 );
 
 		$reset_query_vars = array(
 			'second' , 'minute', 'hour',
@@ -113,8 +118,6 @@ class Meta_Date_Archive_Query {
 		foreach ( $reset_query_vars as $var ) {
 			$query->set( $var, '' );
 		}
-
-		$query->set( 'post_type', $this->post_type );
 
 		$meta_query =  array(
 			'relation' => 'AND',
@@ -222,7 +225,7 @@ class Meta_Date_Archive_Query {
 	 * @return array The array of whitelisted query variables.
 	 */
 	public function query_vars( $query_vars ) {
-		$query_vars[] = 'meta_date_archive_query';
+		$query_vars[] = 'meta_date_archives';
 		$query_vars[] = 'meta_archive_start_date';
 		$query_vars[] = 'meta_archive_end_date';
 		return $query_vars;
@@ -250,6 +253,8 @@ class Meta_Date_Archive_Query {
 	 * @return array Array with post objects.
 	 */
 	public function the_posts( $posts, $_this ) {
+
+		$this->dates = array();
 
 		if ( 'meta_date_archive' !== $this->filters ) {
 			$_this->query_vars['suppress_filters'] = $this->filters;
@@ -281,37 +286,6 @@ class Meta_Date_Archive_Query {
 	 */
 	public function posts_where( $where ) {
 		return $where . 'AND 1 = 0';
-	}
-
-
-	/**
-	 * Adds the start date meta if only end date meta is provided when editing or publishing a post.
-	 *
-	 * @since 1.0
-	 * @return void
-	 */
-	public function save_post( $post_id ) {
-
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return $post_id;
-		}
-
-		if ( !current_user_can( 'edit_post', $post_id ) ) {
-			return $post_id;
-		}
-
-		$post_type = ( isset( $_POST['post_type'] ) ) ?  $_POST['post_type'] : '';
-
-		if ( $this->post_type !== $post_type ) {
-			return $post_id;
-		}
-
-		$end_date = get_post_meta( $post_id, $this->end, true );
-		if ( !empty( $end_date ) ) {
-			if ( !get_post_meta( $post_id, $this->start, true ) ) {
-				update_post_meta( $post_id, $this->start, $end_date );
-			}
-		}
 	}
 
 }
