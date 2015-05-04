@@ -1,4 +1,4 @@
-# Custom Post Type Date Archives
+# Meta Date Archive
 
 version:      1.1  
 Tested up to: 4.2.1  
