@@ -7,6 +7,8 @@ This plugin replaces the default date archives with archives for posts that have
 
 Add a start and end date custom field to your posts for them to show up in the date archives.
 
+**Note**: If you only provide the end date custom field when saving a post the plugin automatically saves the start date custom field with the same value as the end date.
+
 It finds posts with overlapping start and end dates. For example if you're on a date archive for the month of may (`example.com/2015/05`) it displays posts that have the custom field values:
 
  * start date in may and end date in may.
@@ -15,8 +17,6 @@ It finds posts with overlapping start and end dates. For example if you're on a 
  * start date before may and end date after may.
 
 The format for the start and end date custom field values is `YYYYMMDD` (Year Month Day). Example 20150521.
-
-**Note**: If you only provide the end date custom field when saving a post the plugin automatically saves the start date custom field with the same value as the end date.
 
 ## Registering custom field keys
 The start and end date custom field keys are by default `meta_start_date` and `meta_end_date`.
