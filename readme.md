@@ -34,7 +34,7 @@ function meta_date_archive_start_key( $key ) {
 }
 
 function meta_date_archive_end_key( $key ) {
-	Return your custom field end date key
+	// Return your custom field end date key
 	return 'end_date';
 }
 ```
@@ -42,27 +42,28 @@ function meta_date_archive_end_key( $key ) {
 ## Enable the custom fields archive.
 The custom fields archive is not enabled by default. Put this in your (child) theme's functions.php file to enable it.
 ```php
-add_filter('meta_date_archives', '__return_true');
+add_filter( 'meta_date_archives', '__return_true' );
 ```
 
 Or enable it from the `pre_get_posts` action.
 ```php
 function enable_custom_field_archive( $query ) {
 
-  if ( !is_admin() && $query->is_main_query() ){
-    if( is_date() ){
-      $query->set( 'meta_date_archives', 1 );
+	if ( !is_admin() && $query->is_main_query() ) {
 
-      // set your own query vars here
-    }
-  }
+		if ( is_date() ) {
+			// date archives
+			$query->set( 'meta_date_archives', 1 );
 
+			// set your own query vars here
+		}
+	}
 }
 
 add_action( 'pre_get_posts', 'enable_custom_field_archive' );
 ```
 
-## Custom Query
+## Custom Queries
 Use the query variables `meta_archive_start_date` and `meta_archive_end_date` for the start and end dates.
 
 Example:
