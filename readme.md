@@ -17,10 +17,10 @@ It finds posts with overlapping start and end dates. For example if you're on a 
 
 The format for the start and end date custom field values is `YYYYMMDD` (Year Month Day). Example 20150521.
 
-If you only give the end date custom field to a post the plugin assumes the start date is on the same date.
+**Note**: If you only give the end date custom field to a post the plugin assumes the start date is on the same date.
 
 ## Registering the start and end date custom field keys
-By default the custom field keys are `meta_start_date` and `meta_end_date`.
+The start and end date custom field keys are by default `meta_start_date` and `meta_end_date`.
 
 To register your own start and end date custom field keys use this in your (child) theme's functions.php file.
 
@@ -79,4 +79,5 @@ $args = array (
 );
 
 $date_query = new WP_Query( $args );
-?>```
+?>
+```
