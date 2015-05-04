@@ -18,7 +18,7 @@ The format for the start and end date custom field values is `YYYYMMDD` (Year Mo
 
 **Note**: If you only provide the end date custom field when saving a post the plugin automatically saves the start date custom field with the same value as the end date.
 
-## Registering the start and end date custom field keys
+## Registering custom field keys
 The start and end date custom field keys are by default `meta_start_date` and `meta_end_date`.
 
 To register your own start and end date custom field keys use this in your (child) theme's functions.php file.
