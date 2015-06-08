@@ -136,4 +136,5 @@ if ( $date_posts ) {
 	// Show the calendar.
 	$calendar->show( true );
 }
-?>```
+?>
+```
