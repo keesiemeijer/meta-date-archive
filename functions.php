@@ -133,7 +133,8 @@ function meta_date_archive_validated_dates( $year = 0, $month = 0, $day = 0 ) {
 		// check if date exists
 		if ( checkdate( $month, '01', $year ) ) {
 			$start_date =  $year . $month . '01';
-			$end_date   =  date( 'Ymt', mktime( 23, 59, 59, $month, 1, $year ) ); // 't' gets the last day
+			$date_obj   = new DateTime( $start_date );
+			$end_date   = $date_obj->format('Ymt'); // 't' gets the last day
 		}
 	}
 
