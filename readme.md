@@ -96,19 +96,19 @@ Include the SimpleCalendar.php and SimpleCalendar.css in your theme.
 ### Step two
 Put this in the theme template where you want to show the calendar. In this example the custom field keys are `start_date` and `end_date`
 
+This example shows the calendar for the current month
 ```php
 <?php
+$date_obj = new DateTime( $start_date );
+
 $args = array (
-	// Get posts for the month June.
-	'meta_archive_start_date' => '20150601',
-	'meta_archive_end_date'   => '20150630',
-
-	// Show all posts in the calendar.
-	'posts_per_page' => -1,
-
-	// Set your own query vars here.
+	'meta_archive_start_date' => $date_obj->format( 'Ym01' ), // first day of current month
+	'meta_archive_end_date'   => $date_obj->format( 'Ymt' ), // last day of current month
+	'posts_per_page'          => -1, // show all posts in the calendar
+	
+	// set your own query vars here
 	'post_type'      => 'post',
-	'meta_key'       => 'end_date', // if your start date key is end_date
+	'meta_key'       => 'end_date', // your end date meta key
 	'orderby'        => 'meta_value', // meta_value or meta_value_num
 	'order'          => 'ASC', // ASC or DESC
 );
@@ -117,8 +117,8 @@ $date_posts = get_posts( $args );
 
 if ( $date_posts ) {
 
-	// Add year and month to the calendar.
-	$calendar = new donatj\SimpleCalendar('2015-06');
+	// Use the current year and month to instantiate
+	$calendar = new donatj\SimpleCalendar( $date_obj->format( 'Y-m' ) );
 
 	// Set the start of the week.
 	$calendar->setStartOfWeek( 'Sunday' );
