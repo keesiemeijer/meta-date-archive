@@ -86,3 +86,48 @@ $args = array (
 $date_query = new WP_Query( $args );
 ?>
 ```
+
+## Calendar Example
+This example shows how you would show your dates in a calender using the [SimpleCalendar class](https://donatstudios.com/SimpleCalendar)
+
+### Step one
+Include the SimpleCalendar.php and SimpleCalendar.css in your theme.
+
+### Step two
+Put this in the theme template where you want to show the calendar. In this example the custom field keys are `start_date` and `end_date`
+
+```php
+<?php
+$args = array (
+	'meta_archive_start_date' => '20150601',
+	'meta_archive_end_date'   => '20150630',
+	'posts_per_page' => -1, // show all posts in the calendar
+
+	// set your own query vars here
+	'post_type'      => 'post',
+	'meta_key'       => 'end_date', // if your start date key is end_date
+	'orderby'        => 'meta_value', // meta_value or meta_value_num
+	'order'          => 'ASC', // ASC or DESC
+);
+
+$date_posts = get_posts( $args );
+
+if ( $date_posts ) {
+
+	$calendar = new donatj\SimpleCalendar();
+	$calendar->setStartOfWeek( 'Sunday' );
+
+	foreach ( $date_posts as $post ) {
+
+		// get the dates
+		$start = get_post_meta( $post->ID, 'start_date', true );
+		$end   = get_post_meta( $post->ID, 'end_date', true );
+
+		// add dates to the calendar
+		$calendar->addDailyHtml( $post->post_title, $start, $end );
+	}
+
+	// show calendar
+	$calendar->show( true );
+}
+?>```
