@@ -99,7 +99,7 @@ Put this in the theme template where you want to show the calendar. In this exam
 This example shows the calendar for the current month
 ```php
 <?php
-$date_obj = new DateTime( $start_date );
+$date_obj = new DateTime();
 
 $args = array (
 	'meta_archive_start_date' => $date_obj->format( 'Ym01' ), // first day of current month
