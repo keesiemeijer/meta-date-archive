@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Meta Date Archive
-Version: 1.1
+Version: 1.2
 Plugin URI:
 Description: Date archives from custom field ranges
 Author: keesiemijer

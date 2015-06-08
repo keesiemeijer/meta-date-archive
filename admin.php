@@ -28,10 +28,28 @@ function meta_date_archive_save_post( $post_id ) {
 
 	$post_type = ( isset( $_POST['post_type'] ) ) ?  $_POST['post_type'] : 'post';
 	$end_date  = get_post_meta( $post_id, $end_key, true );
+	$start_date  = get_post_meta( $post_id, $start_key, true );
 
+	if( empty( $end_date ) && empty( $start_date ) ){
+		// both are empty
+		return;
+	}
+
+	if( !empty( $end_date ) && !empty( $start_date ) ) {
+		// both are not empty
+		return;
+	}
+
+	// one of them is empty
 	if ( !empty( $end_date ) &&  $post_type ) {
 		if ( !get_post_meta( $post_id, $start_key, true ) ) {
 			update_post_meta( $post_id, $start_key, $end_date );
+		}
+	}
+
+	if ( !empty( $start_date ) &&  $post_type ) {
+		if ( !get_post_meta( $post_id, $end_key, true ) ) {
+			update_post_meta( $post_id, $end_key, $start_date );
 		}
 	}
 }

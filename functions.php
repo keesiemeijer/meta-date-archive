@@ -51,10 +51,14 @@ function meta_date_archive_start_end_date( $start = '', $end = '' ) {
 	$start = absint( $start ); // int
 	$end   = absint( $end ); // int
 
-	// if not both dates are provided
+	// Not one date is provided
 	if ( !( $start && $end ) ) {
 		return array();
-	}
+	} 
+
+	// Use the same date if only one date is provided.
+	$start = $start ? $start : $end;
+	$end   = $end ?  $end : $start;
 
 	$dates  = meta_date_archive_getdate( $start );
 	$dates  = meta_date_archive_validated_dates( $dates['year'], $dates['month'], $dates['day'] );
