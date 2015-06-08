@@ -99,11 +99,14 @@ Put this in the theme template where you want to show the calendar. In this exam
 ```php
 <?php
 $args = array (
+	// Get posts for the month June.
 	'meta_archive_start_date' => '20150601',
 	'meta_archive_end_date'   => '20150630',
-	'posts_per_page' => -1, // show all posts in the calendar
 
-	// set your own query vars here
+	// Show all posts in the calendar.
+	'posts_per_page' => -1,
+
+	// Set your own query vars here.
 	'post_type'      => 'post',
 	'meta_key'       => 'end_date', // if your start date key is end_date
 	'orderby'        => 'meta_value', // meta_value or meta_value_num
@@ -114,20 +117,23 @@ $date_posts = get_posts( $args );
 
 if ( $date_posts ) {
 
-	$calendar = new donatj\SimpleCalendar();
+	// Add year and month to the calendar.
+	$calendar = new donatj\SimpleCalendar('2015-06');
+
+	// Set the start of the week.
 	$calendar->setStartOfWeek( 'Sunday' );
 
 	foreach ( $date_posts as $post ) {
 
-		// get the dates
+		// Get the dates.
 		$start = get_post_meta( $post->ID, 'start_date', true );
 		$end   = get_post_meta( $post->ID, 'end_date', true );
 
-		// add dates to the calendar
+		// Add the dates to the calendar.
 		$calendar->addDailyHtml( $post->post_title, $start, $end );
 	}
 
-	// show calendar
+	// Show the calendar.
 	$calendar->show( true );
 }
 ?>```
