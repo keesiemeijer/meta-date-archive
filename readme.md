@@ -3,9 +3,9 @@
 version:      1.2  
 Tested up to: 4.2.2  
 
-This plugin replaces the default date archives with archives for posts that have a start and end date custom field. Or use it to [query for posts between two date custom fields](/#custom-queries).
+This plugin replaces the default date archives with archives for posts that have a start and end date custom field. Or use it to [query for posts between two date custom fields](#custom-queries).
 
-[Enable the custom fields archive](/#enable-the-custom-fields-archive) and add a start and end date custom field to your posts for them to show up in the date archives.
+[Enable the custom fields archive](#enable-the-custom-fields-archive) and add a start and end date custom field to your posts for them to show up in the date archives.
 
 **Note**: If you only provide **one** of the date custom field when saving a post the plugin automatically saves the other date custom field with the same date. 
 
